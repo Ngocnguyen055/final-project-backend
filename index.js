@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const path = require("path");
 const dbConnect = require("./db/dbConnect");
 const UserRouter = require("./routes/UserRouter");
 const PhotoRouter = require("./routes/PhotoRouter");
@@ -12,6 +13,9 @@ dbConnect();
 
 app.use(cors());
 app.use(express.json());
+
+// Serve images as static files (public, no auth required)
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 // ====== PUBLIC ROUTES (no auth required) ======
 // Login & Logout

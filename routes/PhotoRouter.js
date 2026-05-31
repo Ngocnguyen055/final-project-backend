@@ -3,14 +3,20 @@ const router = express.Router();
 const mongoose = require("mongoose");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 const Photo = require("../db/photoModel.js");
 const User = require("../db/userModel");
+
+// Ensure images directory exists in backend
+const imagesDir = path.join(__dirname, "..", "images");
+if (!fs.existsSync(imagesDir)) {
+  fs.mkdirSync(imagesDir, { recursive: true });
+}
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    // Save uploaded photos to frontend/public/images
-    const imagesDir = path.join(__dirname, "..", "..", "frontend", "public", "images");
+    // Save uploaded photos to backend's own images directory
     cb(null, imagesDir);
   },
   filename: function (req, file, cb) {
